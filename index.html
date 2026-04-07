@@ -336,21 +336,21 @@
         
         function switchTab(tabId) {
             tabs.forEach(t => {
-                const el = document.getElementById(`tab-${t}`);
+                const section = document.getElementById(`tab-${t}`);
                 const nav = document.getElementById(`nav-${t}`);
                 const label = document.getElementById(`label-${t}`);
                 
                 if (t === tabId) {
-                    el.classList.remove('hidden');
+                    section.classList.remove('hidden');
                     nav.className = "flex flex-col items-center justify-center bg-[#006940] dark:bg-[#52f9a8] text-white dark:text-[#003627] rounded-full w-16 h-16 -translate-y-4 shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer";
-                    label.classList.add('hidden');
+                    if (label) label.classList.add('hidden');
                 } else {
-                    el.classList.add('hidden');
+                    section.classList.add('hidden');
                     nav.className = "flex flex-col items-center justify-center text-[#006940]/60 dark:text-[#52f9a8]/60 p-2 hover:scale-110 transition-transform cursor-pointer";
-                    label.classList.remove('hidden');
+                    if (label) label.classList.remove('hidden');
                 }
             });
-            window.scrollTo(0,0);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         const harshComments = [
@@ -386,13 +386,14 @@
             const totalExpenses = rent + groceries + transport + bills + credit + card + coffee + other;
             const remaining = salary - totalExpenses;
             
-            // Financial Score Logic: (Salary - Expenses) / Salary as percentage
+            // Financial Score Logic: 100 - (Total Expenses / Salary * 100), clamped between 0 and 100
             let score = 0;
             if (salary > 0) {
-                const savingsRate = (remaining / salary) * 100;
-                score = Math.max(0, Math.min(100, Math.round(savingsRate)));
+                const expenseRatio = (totalExpenses / salary) * 100;
+                score = Math.max(0, Math.min(100, Math.round(100 - expenseRatio)));
+            } else {
+                score = 0;
             }
-            if (remaining <= 0 && salary > 0) score = 0;
 
             // Salary Comparison
             const diff = ((salary - NATIONAL_AVERAGE_SALARY) / NATIONAL_AVERAGE_SALARY) * 100;
@@ -417,7 +418,7 @@
             const survivalBar = document.getElementById('display-survival-bar');
             const survivalComment = document.getElementById('display-survival-comment');
             
-            const survivalPct = Math.max(0, Math.min(100, (remaining / STARVATION_LIMIT) * 100));
+            const survivalPct = salary > 0 ? Math.max(0, Math.min(100, (remaining / salary) * 100)) : 0;
             survivalBar.style.width = `${survivalPct}%`;
             
             if (remaining < 0) {
@@ -454,7 +455,8 @@
             // Collapse Date Logic
             const collapseDate = new Date();
             if (remaining < 0) {
-                const daysLeft = Math.floor(salary / (totalExpenses / 30));
+                const burnRate = totalExpenses / 30;
+                const daysLeft = burnRate > 0 ? Math.floor(salary / burnRate) : 0;
                 collapseDate.setDate(collapseDate.getDate() + Math.max(1, daysLeft));
                 document.getElementById('display-collapse-note').innerText = "Vasiyetini hazırladın mı? Çok az vaktin kaldı.";
             } else if (remaining < salary * 0.1) {
@@ -482,7 +484,7 @@
             document.getElementById('chart-placeholder').classList.add('hidden');
             document.getElementById('main-chart-svg').classList.remove('hidden');
 
-            // Update Charts (Order: Rent -> Debt -> Lifestyle)
+            // Update SVG Circles (Stroke Dash Offset logic for stacking)
             const rentCircle = document.getElementById('chart-rent');
             const debtCircle = document.getElementById('chart-debt');
             const lifeCircle = document.getElementById('chart-lifestyle');
@@ -503,19 +505,19 @@
             const totalPctVal = salary > 0 ? (totalExpenses / salary) * 100 : 0;
             document.getElementById('display-total-pct').innerText = `%${Math.round(totalPctVal)}`;
             
-            const luxuryRatio = (coffee + other) / totalExpenses * 100 || 0;
+            const luxuryRatio = totalExpenses > 0 ? (coffee + other) / totalExpenses * 100 : 0;
             document.getElementById('display-luxury-pct').innerText = `%${Math.round(luxuryRatio)}`;
             document.getElementById('luxury-bar').style.width = `${Math.min(100, luxuryRatio)}%`;
             
             if(coffee > 2000) {
-                document.getElementById('display-coffee-roast').innerText = "Bu ay içtiğin kahvelerle starbucks'tan hisse alabilirdin, ama sen sadece selülit aldın.";
+                document.getElementById('display-coffee-roast').innerText = "Bu ay içtiğin kahvelerle Starbucks'tan hisse alabilirdin, ama sen sadece selülit aldın.";
             } else if (coffee > 500) {
                 document.getElementById('display-coffee-roast').innerText = "Kahve masrafınla küçük bir Afrika ülkesinin dış borcunu kapatabilirdin. Tebrikler.";
             } else {
                 document.getElementById('display-coffee-roast').innerText = "Kahve masrafın makul gibi ama hala fakirsin.";
             }
 
-            // Final switch to Analysis tab
+            // IMMEDIATELY switch to Analysis tab
             switchTab('analiz');
         }
 
