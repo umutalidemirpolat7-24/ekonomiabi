@@ -89,10 +89,19 @@
         body {
             min-height: max(884px, 100dvh);
         }
+        #chart-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border: 4px dashed #aaf1d3;
+            border-radius: 9999px;
+            width: 12rem;
+            height: 12rem;
+        }
     </style>
 </head>
 <body class="bg-background font-body text-on-surface selection:bg-primary-container selection:text-on-primary-container">
-<!-- TopAppBar (shared component logic) -->
 <header class="flex justify-between items-center px-6 h-16 w-full fixed top-0 z-50 bg-[#d9ffed] dark:bg-[#001a10]">
 <div class="flex items-center gap-3">
 <div class="w-10 h-10 rounded-full bg-primary-container overflow-hidden flex items-center justify-center border-2 border-primary">
@@ -160,8 +169,8 @@
 <input class="w-full bg-transparent font-headline text-xl font-bold outline-none" id="input-other" placeholder="₺0" type="number"/>
 </div>
 <button class="w-full py-6 rounded-xl bg-gradient-to-r from-primary to-primary-container text-on-primary font-headline text-lg font-black tracking-widest uppercase shadow-xl hover:scale-[1.02] active:scale-95 transition-all" onclick="calculateEverything()">
-                EKONOMİ ABİ HESAPLASIN
-            </button>
+                    EKONOMİ ABİ HESAPLASIN
+                </button>
 </div>
 </section>
 <!-- SECTION: ANALİZ -->
@@ -190,8 +199,14 @@
 <!-- Abi Indicator -->
 <div class="absolute -bottom-6 -right-2 bg-tertiary text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg flex items-center gap-2">
 <div class="w-4 h-4 rounded-full bg-white/20 animate-pulse"></div>
-                Abi diyor ki: <span id="display-abi-tip">"Cüzdanın için bir dakikalık saygı duruşu başlasın."</span>
+                    Abi diyor ki: <span id="display-abi-tip">"Cüzdanın için bir dakikalık saygı duruşu başlasın."</span>
 </div>
+</div>
+<!-- AI SECTION: Maaş Karşılaştırma -->
+<div class="bg-surface-container-high p-6 rounded-lg border-2 border-primary/20">
+<h4 class="font-headline text-xs font-bold uppercase tracking-widest text-primary mb-2">Maaşın Türkiye Ortalamasındaki Yeri</h4>
+<p class="text-lg font-bold text-on-surface leading-tight" id="display-salary-comparison">Hesaplama bekliyor...</p>
+<p class="text-[10px] mt-2 text-outline-variant italic">Ref: 25,000 TL Ulusal Ortalama</p>
 </div>
 <div class="bg-secondary text-white p-8 rounded-lg relative overflow-hidden">
 <div class="absolute -right-10 -bottom-10 opacity-10">
@@ -213,8 +228,8 @@
 </div>
 <button class="w-full py-4 border-2 border-tertiary text-tertiary rounded-xl font-bold flex items-center justify-center gap-3 active:scale-95 transition-all" onclick="shareResult()">
 <span class="material-symbols-outlined">share</span>
-            Ekonomi Abi bana bunu dedi 😂
-        </button>
+                Ekonomi Abi bana bunu dedi 😂
+            </button>
 </section>
 <!-- SECTION: DÖKÜM -->
 <section class="hidden space-y-8" id="tab-dokum">
@@ -222,16 +237,17 @@
 <h2 class="font-headline text-3xl font-bold text-primary">Harcama Dağılımı</h2>
 </header>
 <div class="bg-surface-container-lowest p-8 rounded-lg shadow-sm flex flex-col items-center">
-<!-- Simple SVG Donut Chart -->
+<!-- Dynamic SVG Donut Chart -->
 <div class="relative w-48 h-48 mb-8">
-<svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+<div class="text-xs font-bold text-outline uppercase px-4" id="chart-placeholder">Hesaplama Bekleniyor</div>
+<svg class="w-full h-full transform -rotate-90 hidden" id="main-chart-svg" viewbox="0 0 36 36">
 <circle cx="18" cy="18" fill="transparent" r="15.9" stroke="#aaf1d3" stroke-width="4"></circle>
 <circle cx="18" cy="18" fill="transparent" id="chart-rent" r="15.9" stroke="#006940" stroke-dasharray="0 100" stroke-dashoffset="0" stroke-width="4"></circle>
 <circle cx="18" cy="18" fill="transparent" id="chart-debt" r="15.9" stroke="#b61321" stroke-dasharray="0 100" stroke-dashoffset="0" stroke-width="4"></circle>
 <circle cx="18" cy="18" fill="transparent" id="chart-lifestyle" r="15.9" stroke="#652fe7" stroke-dasharray="0 100" stroke-dashoffset="0" stroke-width="4"></circle>
 </svg>
-<div class="absolute inset-0 flex flex-col items-center justify-center">
-<span class="text-xs font-bold text-outline uppercase">Gider</span>
+<div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+<span class="text-xs font-bold text-outline uppercase">Gider / Maaş</span>
 <span class="text-xl font-headline font-black" id="display-total-pct">%0</span>
 </div>
 </div>
@@ -270,160 +286,195 @@
 <div>
 <h4 class="font-bold text-sm mb-1">Kahve Bağımlılığı Raporu</h4>
 <p class="text-xs text-on-surface-variant leading-relaxed" id="display-coffee-roast">
-                        Hesaplamama göre, bu ay içtiğin kahvelerle bir emeklilik fonu kurabilirdin ama sen mide yanmasını tercih ettin.
-                    </p>
+                            Hesaplamama göre, bu ay içtiğin kahvelerle bir emeklilik fonu kurabilirdin ama sen mide yanmasını tercih ettin.
+                        </p>
 </div>
 </div>
 </div>
 </section>
 </main>
-<!-- BottomNavBar (shared component logic) -->
+<!-- BottomNavBar -->
 <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 h-20 bg-[#b4f6da]/70 dark:bg-[#003627]/70 backdrop-blur-xl shadow-[0_-10px_30px_rgba(0,54,39,0.05)] rounded-t-[2rem]">
 <!-- Giriş -->
 <a class="flex flex-col items-center justify-center bg-[#006940] dark:bg-[#52f9a8] text-white dark:text-[#003627] rounded-full w-16 h-16 -translate-y-4 shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer" id="nav-giris" onclick="switchTab('giris')">
 <span class="material-symbols-outlined">add_chart</span>
-<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold uppercase tracking-widest mt-1 hidden">Giriş</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold uppercase tracking-widest mt-1 hidden" id="label-giris">Giriş</span>
 </a>
 <!-- Analiz -->
 <a class="flex flex-col items-center justify-center text-[#006940]/60 dark:text-[#52f9a8]/60 p-2 hover:scale-110 transition-transform cursor-pointer" id="nav-analiz" onclick="switchTab('analiz')">
 <span class="material-symbols-outlined">query_stats</span>
-<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold uppercase tracking-widest mt-1">Analiz</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold uppercase tracking-widest mt-1" id="label-analiz">Analiz</span>
 </a>
 <!-- Döküm -->
 <a class="flex flex-col items-center justify-center text-[#006940]/60 dark:text-[#52f9a8]/60 p-2 hover:scale-110 transition-transform cursor-pointer" id="nav-dokum" onclick="switchTab('dokum')">
 <span class="material-symbols-outlined">receipt_long</span>
-<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold uppercase tracking-widest mt-1">Döküm</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold uppercase tracking-widest mt-1" id="label-dokum">Döküm</span>
 </a>
 </nav>
 <script>
-    const tabs = ['giris', 'analiz', 'dokum'];
-    
-    function switchTab(tabId) {
-        tabs.forEach(t => {
-            const el = document.getElementById(`tab-${t}`);
-            const nav = document.getElementById(`nav-${t}`);
+        const tabs = ['giris', 'analiz', 'dokum'];
+        
+        function switchTab(tabId) {
+            tabs.forEach(t => {
+                const el = document.getElementById(`tab-${t}`);
+                const nav = document.getElementById(`nav-${t}`);
+                const label = document.getElementById(`label-${t}`);
+                
+                if (t === tabId) {
+                    el.classList.remove('hidden');
+                    nav.className = "flex flex-col items-center justify-center bg-[#006940] dark:bg-[#52f9a8] text-white dark:text-[#003627] rounded-full w-16 h-16 -translate-y-4 shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer";
+                    label.classList.add('hidden');
+                } else {
+                    el.classList.add('hidden');
+                    nav.className = "flex flex-col items-center justify-center text-[#006940]/60 dark:text-[#52f9a8]/60 p-2 hover:scale-110 transition-transform cursor-pointer";
+                    label.classList.remove('hidden');
+                }
+            });
+        }
+
+        const harshComments = [
+            "Bu gidişle sadece oksijen tüketeceksin, o da şimdilik bedava.",
+            "Cüzdanın için bir dakikalık saygı duruşu başlasın.",
+            "Fakirleşme hızın ışık hızını geçti, tebrikler.",
+            "Senin finansal okuryazarlığın 'olsa da yesek' seviyesinde.",
+            "Emeklilik planın Milli Piyango mu? Yazık.",
+            "Para seni sevmiyor evlat, zorlama.",
+            "Bu harcamalarla ancak rüyanda zengin olursun.",
+            "Geleceğin parlıyor demiyorum, yanıyor diyorum."
+        ];
+
+        const abiTips = [
+            "Kredi kartı senin düşmanın, arkadaşın değil.",
+            "Maaşın yatınca direkt borca gitmesi bir yaşam biçimi değildir.",
+            "Dışarıdan yemek söylemeyi bırak, mutfak süs değil.",
+            "İndirim görünce saldırmayı kes, zaten paran yok.",
+            "Finansal çöküşe son 3... 2... 1..."
+        ];
+
+        const NATIONAL_AVERAGE_SALARY = 25000;
+
+        function calculateEverything() {
+            const salary = parseFloat(document.getElementById('input-salary').value) || 0;
+            const rent = parseFloat(document.getElementById('input-rent').value) || 0;
+            const groceries = parseFloat(document.getElementById('input-groceries').value) || 0;
+            const transport = parseFloat(document.getElementById('input-transport').value) || 0;
+            const bills = parseFloat(document.getElementById('input-bills').value) || 0;
+            const credit = parseFloat(document.getElementById('input-credit').value) || 0;
+            const card = parseFloat(document.getElementById('input-card').value) || 0;
+            const coffee = parseFloat(document.getElementById('input-coffee').value) || 0;
+            const other = parseFloat(document.getElementById('input-other').value) || 0;
+
+            const totalExpenses = rent + groceries + transport + bills + credit + card + coffee + other;
+            const remaining = salary - totalExpenses;
             
-            if (t === tabId) {
-                el.classList.remove('hidden');
-                // Set active styles for nav
-                nav.className = "flex flex-col items-center justify-center bg-[#006940] dark:bg-[#52f9a8] text-white dark:text-[#003627] rounded-full w-16 h-16 -translate-y-4 shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer";
-                nav.querySelector('span:last-child').classList.add('hidden'); // label usually hidden in active
-            } else {
-                el.classList.add('hidden');
-                // Set inactive styles for nav
-                nav.className = "flex flex-col items-center justify-center text-[#006940]/60 dark:text-[#52f9a8]/60 p-2 hover:scale-110 transition-transform cursor-pointer";
-                nav.querySelector('span:last-child').classList.remove('hidden');
+            // Financial Score Logic
+            let score = 0;
+            if (salary > 0) {
+                // Heuristics: Savings rate is the main driver
+                const savingsRate = (remaining / salary) * 100;
+                score = savingsRate * 1.5; // Score 100 if saving ~66% (Unrealistic, but fits the vibe)
             }
-        });
-    }
+            score = Math.max(0, Math.min(100, Math.round(score)));
 
-    const harshComments = [
-        "Bu gidişle sadece oksijen tüketeceksin, o da şimdilik bedava.",
-        "Cüzdanın için bir dakikalık saygı duruşu başlasın.",
-        "Fakirleşme hızın ışık hızını geçti, tebrikler.",
-        "Senin finansal okuryazarlığın 'olsa da yesek' seviyesinde.",
-        "Emeklilik planın Milli Piyango mu? Yazık.",
-        "Para seni sevmiyor evlat, zorlama.",
-        "Bu harcamalarla ancak rüyanda zengin olursun.",
-        "Geleceğin parlıyor demiyorum, yanıyor diyorum."
-    ];
+            // Salary Comparison
+            const diff = ((salary - NATIONAL_AVERAGE_SALARY) / NATIONAL_AVERAGE_SALARY) * 100;
+            let comparisonText = "";
+            if (salary === 0) {
+                comparisonText = "Maaşın yok, ortalamayı geçtik hayatta kalman mucize.";
+            } else if (diff > 0) {
+                comparisonText = `Maaşın Türkiye ortalamasından %${Math.round(diff)} daha yüksek. Yine de bu harcamalarla zor.`;
+            } else {
+                comparisonText = `Maaşın Türkiye ortalamasından %${Math.round(Math.abs(diff))} daha düşük. Tam bir ekonomi abi vakası.`;
+            }
+            document.getElementById('display-salary-comparison').innerText = comparisonText;
 
-    const abiTips = [
-        "Kredi kartı senin düşmanın, arkadaşın değil.",
-        "Maaşın yatınca direkt borca gitmesi bir yaşam biçimi değildir.",
-        "Dışarıdan yemek söylemeyi bırak, mutfak süs değil.",
-        "İndirim görünce saldırmayı kes, zaten paran yok.",
-        "Finansal çöküşe son 3... 2... 1..."
-    ];
+            // Update UI
+            document.getElementById('display-score').innerText = score;
+            document.getElementById('display-score-bar').style.width = `${score}%`;
+            document.getElementById('display-total-expense').innerText = `₺${totalExpenses.toLocaleString('tr-TR')}`;
+            document.getElementById('display-remaining').innerText = `₺${remaining.toLocaleString('tr-TR')}`;
+            
+            // Update Mood Icon
+            const moodIcon = document.getElementById('display-mood-icon');
+            if (score > 70) moodIcon.innerText = "sentiment_very_satisfied";
+            else if (score > 40) moodIcon.innerText = "sentiment_neutral";
+            else moodIcon.innerText = "sentiment_very_dissatisfied";
 
-    function calculateEverything() {
-        const salary = parseFloat(document.getElementById('input-salary').value) || 0;
-        const rent = parseFloat(document.getElementById('input-rent').value) || 0;
-        const groceries = parseFloat(document.getElementById('input-groceries').value) || 0;
-        const transport = parseFloat(document.getElementById('input-transport').value) || 0;
-        const bills = parseFloat(document.getElementById('input-bills').value) || 0;
-        const credit = parseFloat(document.getElementById('input-credit').value) || 0;
-        const card = parseFloat(document.getElementById('input-card').value) || 0;
-        const coffee = parseFloat(document.getElementById('input-coffee').value) || 0;
-        const other = parseFloat(document.getElementById('input-other').value) || 0;
+            // Harsh comments
+            let comment = "";
+            if(score < 10) comment = harshComments[0];
+            else if(score < 30) comment = harshComments[1];
+            else if(score < 50) comment = harshComments[2];
+            else if(score < 70) comment = harshComments[3];
+            else comment = "Şaşırtıcı şekilde batmamışsın, ama hala takibimdesin.";
+            
+            document.getElementById('display-harsh-comment').innerText = `"${comment}"`;
+            document.getElementById('display-abi-tip').innerText = `"${abiTips[Math.floor(Math.random() * abiTips.length)]}"`;
 
-        const totalExpenses = rent + groceries + transport + bills + credit + card + coffee + other;
-        const remaining = salary - totalExpenses;
-        
-        let score = 0;
-        if (salary > 0) {
-            score = (remaining / salary) * 100;
-        }
-        score = Math.max(0, Math.min(100, Math.round(score)));
+            // Collapse Date Logic
+            const dailyBurn = totalExpenses / 30;
+            const collapseDate = new Date();
+            
+            if (remaining < 0 && dailyBurn > 0) {
+                const daysToCollapse = Math.abs(salary / (totalExpenses / 30));
+                collapseDate.setDate(collapseDate.getDate() + Math.max(1, Math.round(daysToCollapse)));
+                document.getElementById('display-collapse-note').innerText = "Vasiyetini hazırladın mı? Çok az vaktin kaldı.";
+            } else if (remaining < salary * 0.1) {
+                collapseDate.setMonth(collapseDate.getMonth() + 1);
+                document.getElementById('display-collapse-note').innerText = "Ay sonunu görürsün ama sürünerek.";
+            } else {
+                collapseDate.setFullYear(collapseDate.getFullYear() + 1);
+                document.getElementById('display-collapse-note').innerText = "Şimdilik hayattasın, ama bu bir mucize.";
+            }
+            
+            const options = { day: 'numeric', month: 'LONG' };
+            document.getElementById('display-collapse-date').innerText = collapseDate.toLocaleDateString('tr-TR', options).toUpperCase();
 
-        // Update UI
-        document.getElementById('display-score').innerText = score;
-        document.getElementById('display-score-bar').style.width = `${score}%`;
-        document.getElementById('display-total-expense').innerText = `₺${totalExpenses.toLocaleString('tr-TR')}`;
-        document.getElementById('display-remaining').innerText = `₺${remaining.toLocaleString('tr-TR')}`;
-        
-        // Harsh comments logic based on score
-        let comment = "";
-        if(score < 10) comment = harshComments[0];
-        else if(score < 30) comment = harshComments[1];
-        else if(score < 50) comment = harshComments[2];
-        else comment = harshComments[3];
-        
-        document.getElementById('display-harsh-comment').innerText = `"${comment}"`;
-        document.getElementById('display-abi-tip').innerText = `"${abiTips[Math.floor(Math.random() * abiTips.length)]}"`;
+            // Breakdown Update
+            const rentSum = rent + bills;
+            const debtSum = credit + card;
+            const lifeSum = groceries + transport + coffee + other;
 
-        // Collapse Date Logic
-        const dailyBurn = totalExpenses / 30;
-        const daysToCollapse = dailyBurn > 0 ? salary / dailyBurn : 365;
-        const collapseDate = new Date();
-        collapseDate.setDate(collapseDate.getDate() + daysToCollapse);
-        
-        const options = { day: 'numeric', month: 'LONG' };
-        document.getElementById('display-collapse-date').innerText = collapseDate.toLocaleDateString('tr-TR', options).toUpperCase();
-        
-        if (daysToCollapse < 10) {
-            document.getElementById('display-collapse-note').innerText = "Vasiyetini hazırladın mı? Çok az vaktin kaldı.";
-        } else if (daysToCollapse < 25) {
-            document.getElementById('display-collapse-note').innerText = "Ay sonunu görürsün ama sürünerek.";
-        } else {
-            document.getElementById('display-collapse-note').innerText = "Şimdilik hayattasın, ama bu bir mucize.";
-        }
+            const rentPct = (rentSum / totalExpenses) * 100 || 0;
+            const debtPct = (debtSum / totalExpenses) * 100 || 0;
+            const lifestylePct = (lifeSum / totalExpenses) * 100 || 0;
 
-        // Breakdown Update
-        const rentPct = (rent + bills) / totalExpenses * 100 || 0;
-        const debtPct = (credit + card) / totalExpenses * 100 || 0;
-        const lifestylePct = (groceries + transport + coffee + other) / totalExpenses * 100 || 0;
+            // Show Chart
+            document.getElementById('chart-placeholder').classList.add('hidden');
+            document.getElementById('main-chart-svg').classList.remove('hidden');
 
-        // Update Charts (Simple SVG dasharray logic)
-        document.getElementById('chart-rent').style.strokeDasharray = `${rentPct} 100`;
-        document.getElementById('chart-debt').style.strokeDasharray = `${debtPct} 100`;
-        document.getElementById('chart-debt').style.strokeDashoffset = `-${rentPct}`;
-        document.getElementById('chart-lifestyle').style.strokeDasharray = `${lifestylePct} 100`;
-        document.getElementById('chart-lifestyle').style.strokeDashoffset = `-${rentPct + debtPct}`;
+            // Update Charts
+            document.getElementById('chart-rent').style.strokeDasharray = `${rentPct} 100`;
+            document.getElementById('chart-debt').style.strokeDasharray = `${debtPct} 100`;
+            document.getElementById('chart-debt').style.strokeDashoffset = `-${rentPct}`;
+            document.getElementById('chart-lifestyle').style.strokeDasharray = `${lifestylePct} 100`;
+            document.getElementById('chart-lifestyle').style.strokeDashoffset = `-${rentPct + debtPct}`;
 
-        document.getElementById('list-rent').innerText = `₺${(rent + bills).toLocaleString('tr-TR')}`;
-        document.getElementById('list-debt').innerText = `₺${(credit + card).toLocaleString('tr-TR')}`;
-        document.getElementById('list-lifestyle').innerText = `₺${(groceries + transport + coffee + other).toLocaleString('tr-TR')}`;
-        
-        const totalPctVal = salary > 0 ? (totalExpenses / salary) * 100 : 0;
-        document.getElementById('display-total-pct').innerText = `%${Math.round(totalPctVal)}`;
-        
-        const luxuryRatio = (coffee + other) / totalExpenses * 100 || 0;
-        document.getElementById('display-luxury-pct').innerText = `%${Math.round(luxuryRatio)}`;
-        document.getElementById('luxury-bar').style.width = `${Math.min(100, luxuryRatio)}%`;
-        
-        if(coffee > 1000) {
-            document.getElementById('display-coffee-roast').innerText = "Bu kadar kahveye rağmen hala ayıkamadıysan senin durumun finansal değil tıbbi bir vaka.";
-        } else {
-            document.getElementById('display-coffee-roast').innerText = "Kahve masrafın makul gibi ama yine de birikim yapabileceğin gerçeğini değiştirmiyor.";
+            document.getElementById('list-rent').innerText = `₺${rentSum.toLocaleString('tr-TR')}`;
+            document.getElementById('list-debt').innerText = `₺${debtSum.toLocaleString('tr-TR')}`;
+            document.getElementById('list-lifestyle').innerText = `₺${lifeSum.toLocaleString('tr-TR')}`;
+            
+            const totalPctVal = salary > 0 ? (totalExpenses / salary) * 100 : 0;
+            document.getElementById('display-total-pct').innerText = `%${Math.round(totalPctVal)}`;
+            
+            const luxuryRatio = (coffee + other) / totalExpenses * 100 || 0;
+            document.getElementById('display-luxury-pct').innerText = `%${Math.round(luxuryRatio)}`;
+            document.getElementById('luxury-bar').style.width = `${Math.min(100, luxuryRatio)}%`;
+            
+            if(coffee > 1500) {
+                document.getElementById('display-coffee-roast').innerText = "Bu kadar kahveye rağmen hala ayıkamadıysan senin durumun finansal değil tıbbi bir vaka.";
+            } else if (coffee > 500) {
+                document.getElementById('display-coffee-roast').innerText = "Kahve masrafınla küçük bir Afrika ülkesinin dış borcunu kapatabilirdin. Tebrikler.";
+            } else {
+                document.getElementById('display-coffee-roast').innerText = "Kahve masrafın makul gibi ama yine de birikim yapabileceğin gerçeğini değiştirmiyor.";
+            }
+
+            // Final switch
+            switchTab('analiz');
         }
 
-        // Final switch
-        switchTab('analiz');
-    }
-
-    function shareResult() {
-        alert("Abi'nin bu kadar gömmesini gerçekten paylaşmak istiyor musun?");
-    }
-</script>
+        function shareResult() {
+            alert("Abi'nin bu kadar gömmesini gerçekten paylaşmak istiyor musun?");
+        }
+    </script>
 </body></html>
