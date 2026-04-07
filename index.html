@@ -6,7 +6,6 @@
 <title>Ekonomi Abi - Finansal Absürdist</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
         tailwind.config = {
@@ -87,90 +86,85 @@
         }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        body {
+            min-height: max(884px, 100dvh);
+        }
     </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-  </head>
+</head>
 <body class="bg-background font-body text-on-surface selection:bg-primary-container selection:text-on-primary-container">
-<!-- TopAppBar -->
+<!-- TopAppBar (shared component logic) -->
 <header class="flex justify-between items-center px-6 h-16 w-full fixed top-0 z-50 bg-[#d9ffed] dark:bg-[#001a10]">
 <div class="flex items-center gap-3">
 <div class="w-10 h-10 rounded-full bg-primary-container overflow-hidden flex items-center justify-center border-2 border-primary">
-<img alt="Sarcastic Mascot Abi" class="w-full h-full object-cover" data-alt="Digital art illustration of a sarcastic-looking middle-aged man with thick glasses and a mocking smirk, vibrant green background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYTrPivnp01IEKF3aKinz4jlvEO9tzdYZkE6Bey21HYZ0YadSEc_yONrMMyJADiqhkwLAbLHU2JKe4sKbK5UoLNJvj76cwuBdG2B8pjBrxTh4AF-dtG3r00VFZrDJEEoNk05ZAaLtoZB3tHItdudsffLV4Q9mNpuA-ztCFobqKN51GchXGTJWs7z7ohS9s_8PnGqMg6OMu5KJgAWeUnh0QVwstkRXTZ422O0E1isfsxXfXLi5B_wiw1KGP-WDpEmHe0kUvXMJhiS0"/>
+<img alt="Sarcastic Mascot Abi" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYTrPivnp01IEKF3aKinz4jlvEO9tzdYZkE6Bey21HYZ0YadSEc_yONrMMyJADiqhkwLAbLHU2JKe4sKbK5UoLNJvj76cwuBdG2B8pjBrxTh4AF-dtG3r00VFZrDJEEoNk05ZAaLtoZB3tHItdudsffLV4Q9mNpuA-ztCFobqKN51GchXGTJWs7z7ohS9s_8PnGqMg6OMu5KJgAWeUnh0QVwstkRXTZ422O0E1isfsxXfXLi5B_wiw1KGP-WDpEmHe0kUvXMJhiS0"/>
 </div>
 <h1 class="text-2xl font-black text-[#006940] dark:text-[#52f9a8] uppercase italic font-['Space_Grotesk'] tracking-tight">Ekonomi Abi</h1>
 </div>
-<button class="material-symbols-outlined text-[#006940] dark:text-[#52f9a8] hover:opacity-80 transition-opacity active:scale-95 duration-150" data-icon="settings">settings</button>
+<button class="material-symbols-outlined text-[#006940] dark:text-[#52f9a8] hover:opacity-80 transition-opacity active:scale-95 duration-150">settings</button>
 </header>
 <main class="pt-20 pb-32 px-6 max-w-md mx-auto">
-<!-- SECTION: GİRİŞ (Active Tab Content) -->
+<!-- SECTION: GİRİŞ -->
 <section class="space-y-8" id="tab-giris">
 <header class="space-y-2">
 <h2 class="font-headline text-5xl font-bold tracking-tight text-primary leading-none">Sırlarını anlat...</h2>
 <p class="text-on-surface-variant font-medium">Bana her şeyi söyle, cüzdanını yargılamak için buradayım.</p>
 </header>
-<div class="grid grid-cols-1 gap-6">
-<!-- Input Cards -->
 <div class="space-y-6">
 <div class="bg-surface-container-lowest p-6 rounded-lg shadow-[0_10px_30px_rgba(0,54,39,0.04)] relative overflow-hidden group">
 <div class="absolute top-0 right-0 p-3 opacity-10 group-focus-within:opacity-30 transition-opacity">
-<span class="material-symbols-outlined text-4xl" data-icon="payments">payments</span>
+<span class="material-symbols-outlined text-4xl">payments</span>
 </div>
 <label class="block font-headline text-xs font-bold uppercase tracking-widest text-outline mb-2">Aylık Maaş</label>
-<input class="w-full bg-transparent border-b-2 border-primary/20 focus:border-primary transition-colors font-headline text-3xl font-bold text-on-surface outline-none py-2 placeholder:text-surface-dim" placeholder="₺0.00" type="text"/>
+<input class="w-full bg-transparent border-b-2 border-primary/20 focus:border-primary transition-colors font-headline text-3xl font-bold text-on-surface outline-none py-2 placeholder:text-surface-dim" id="input-salary" placeholder="₺0" type="number"/>
 </div>
 <div class="grid grid-cols-2 gap-4">
 <div class="bg-surface-container p-5 rounded-lg border-b-4 border-transparent focus-within:border-primary transition-all">
 <label class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Kira</label>
-<input class="w-full bg-transparent font-headline text-xl font-bold outline-none" placeholder="₺0" type="text"/>
+<input class="w-full bg-transparent font-headline text-xl font-bold outline-none" id="input-rent" placeholder="₺0" type="number"/>
 </div>
 <div class="bg-surface-container p-5 rounded-lg border-b-4 border-transparent focus-within:border-primary transition-all">
 <label class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Market Gideri</label>
-<input class="w-full bg-transparent font-headline text-xl font-bold outline-none" placeholder="₺0" type="text"/>
+<input class="w-full bg-transparent font-headline text-xl font-bold outline-none" id="input-groceries" placeholder="₺0" type="number"/>
 </div>
 </div>
 <div class="grid grid-cols-2 gap-4">
 <div class="bg-surface-container p-5 rounded-lg border-b-4 border-transparent focus-within:border-primary transition-all">
 <label class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Ulaşım / Benzin</label>
-<input class="w-full bg-transparent font-headline text-xl font-bold outline-none" placeholder="₺0" type="text"/>
+<input class="w-full bg-transparent font-headline text-xl font-bold outline-none" id="input-transport" placeholder="₺0" type="number"/>
 </div>
 <div class="bg-surface-container p-5 rounded-lg border-b-4 border-transparent focus-within:border-primary transition-all">
 <label class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Faturalar</label>
-<input class="w-full bg-transparent font-headline text-xl font-bold outline-none" placeholder="₺0" type="text"/>
+<input class="w-full bg-transparent font-headline text-xl font-bold outline-none" id="input-bills" placeholder="₺0" type="number"/>
 </div>
 </div>
 <div class="grid grid-cols-2 gap-4">
 <div class="bg-surface-container p-5 rounded-lg border-b-4 border-transparent focus-within:border-primary transition-all">
 <label class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Kredi</label>
-<input class="w-full bg-transparent font-headline text-xl font-bold outline-none" placeholder="₺0" type="text"/>
+<input class="w-full bg-transparent font-headline text-xl font-bold outline-none" id="input-credit" placeholder="₺0" type="number"/>
 </div>
 <div class="bg-surface-container p-5 rounded-lg border-b-4 border-transparent focus-within:border-primary transition-all">
 <label class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Kredi Kartı</label>
-<input class="w-full bg-transparent font-headline text-xl font-bold outline-none" placeholder="₺0" type="text"/>
+<input class="w-full bg-transparent font-headline text-xl font-bold outline-none" id="input-card" placeholder="₺0" type="number"/>
 </div>
 </div>
 <div class="bg-tertiary/5 p-6 rounded-lg border-2 border-dashed border-tertiary/20 group hover:border-tertiary transition-colors">
 <div class="flex justify-between items-center mb-2">
 <label class="block font-headline text-xs font-bold uppercase tracking-widest text-tertiary">Aylık Kahve</label>
-<span class="material-symbols-outlined text-tertiary" data-icon="coffee">coffee</span>
+<span class="material-symbols-outlined text-tertiary">coffee</span>
 </div>
-<input class="w-full bg-transparent font-headline text-2xl font-bold text-tertiary-dim outline-none placeholder:text-tertiary/30" placeholder="Kaç latte gömdün?" type="text"/>
+<input class="w-full bg-transparent font-headline text-2xl font-bold text-tertiary-dim outline-none placeholder:text-tertiary/30" id="input-coffee" placeholder="₺0" type="number"/>
 <p class="text-[10px] mt-2 italic text-tertiary">"Uyanmak için harcanan servet..."</p>
 </div>
 <div class="bg-surface-container p-5 rounded-lg">
 <label class="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Diğer Giderler</label>
-<input class="w-full bg-transparent font-headline text-xl font-bold outline-none" placeholder="₺0" type="text"/>
+<input class="w-full bg-transparent font-headline text-xl font-bold outline-none" id="input-other" placeholder="₺0" type="number"/>
 </div>
-</div>
-<button class="w-full py-6 rounded-xl bg-gradient-to-r from-primary to-primary-container text-on-primary font-headline text-lg font-black tracking-widest uppercase shadow-xl hover:scale-[1.02] active:scale-95 transition-all">
-                    EKONOMİ ABİ HESAPLASIN
-                </button>
+<button class="w-full py-6 rounded-xl bg-gradient-to-r from-primary to-primary-container text-on-primary font-headline text-lg font-black tracking-widest uppercase shadow-xl hover:scale-[1.02] active:scale-95 transition-all" onclick="calculateEverything()">
+                EKONOMİ ABİ HESAPLASIN
+            </button>
 </div>
 </section>
-<!-- SECTION: ANALİZ (Hidden in simulation) -->
+<!-- SECTION: ANALİZ -->
 <section class="hidden space-y-8" id="tab-analiz">
 <div class="relative">
 <div class="bg-surface-container-lowest p-8 rounded-lg shadow-xl overflow-hidden relative border-l-8 border-secondary">
@@ -178,128 +172,258 @@
 <div>
 <h3 class="font-headline text-xs font-bold uppercase tracking-widest text-secondary mb-1">Finansal Skor</h3>
 <div class="flex items-baseline gap-1">
-<span class="font-headline text-6xl font-bold text-secondary">42</span>
+<span class="font-headline text-6xl font-bold text-secondary" id="display-score">0</span>
 <span class="text-outline-variant font-bold text-xl">/100</span>
 </div>
 </div>
 <div class="bg-secondary/10 p-3 rounded-full">
-<span class="material-symbols-outlined text-secondary text-4xl" data-icon="sentiment_dissatisfied">sentiment_dissatisfied</span>
+<span class="material-symbols-outlined text-secondary text-4xl" id="display-mood-icon">sentiment_very_dissatisfied</span>
 </div>
 </div>
 <div class="space-y-4">
 <div class="h-4 w-full bg-surface-container rounded-full overflow-hidden">
-<div class="h-full bg-secondary w-[42%] rounded-full"></div>
+<div class="h-full bg-secondary transition-all duration-1000 w-0 rounded-full" id="display-score-bar"></div>
 </div>
-<p class="text-sm font-medium italic text-on-surface-variant">"Cüzdanın ayın sonuna doğru duygusal olabilir."</p>
+<p class="text-sm font-medium italic text-on-surface-variant" id="display-harsh-comment">"Fakirleşme hızın ışık hızını geçti, tebrikler."</p>
 </div>
 </div>
 <!-- Abi Indicator -->
 <div class="absolute -bottom-6 -right-2 bg-tertiary text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg flex items-center gap-2">
-<div class="w-4 h-4 rounded-full bg-white/20"></div>
-                    Abi diyor ki: "Bu gidişle emeklilikte sadece güneşleneceksin."
-                </div>
+<div class="w-4 h-4 rounded-full bg-white/20 animate-pulse"></div>
+                Abi diyor ki: <span id="display-abi-tip">"Cüzdanın için bir dakikalık saygı duruşu başlasın."</span>
+</div>
 </div>
 <div class="bg-secondary text-white p-8 rounded-lg relative overflow-hidden">
 <div class="absolute -right-10 -bottom-10 opacity-10">
-<span class="material-symbols-outlined text-[10rem]" data-icon="warning">warning</span>
+<span class="material-symbols-outlined text-[10rem]">warning</span>
 </div>
 <h4 class="font-headline text-lg font-black uppercase tracking-tighter mb-4">Tahmini Finansal Çöküş Tarihi</h4>
-<div class="text-5xl font-headline font-black mb-2">22 AĞUSTOS</div>
-<p class="font-medium opacity-90">Makarnaları hazırlama zamanı.</p>
+<div class="text-5xl font-headline font-black mb-2" id="display-collapse-date">HESAPLANIYOR</div>
+<p class="font-medium opacity-90" id="display-collapse-note">Makarnaları hazırlama zamanı.</p>
 </div>
 <div class="grid grid-cols-2 gap-4">
 <div class="bg-surface-container-high p-6 rounded-lg">
 <h5 class="text-[10px] font-bold uppercase opacity-60 mb-1">Toplam Gider</h5>
-<div class="text-xl font-headline font-bold text-secondary">₺34,250</div>
+<div class="text-xl font-headline font-bold text-secondary" id="display-total-expense">₺0</div>
 </div>
 <div class="bg-surface-container-high p-6 rounded-lg">
 <h5 class="text-[10px] font-bold uppercase opacity-60 mb-1">Kalan Para</h5>
-<div class="text-xl font-headline font-bold text-primary">₺1,420</div>
+<div class="text-xl font-headline font-bold text-primary" id="display-remaining">₺0</div>
 </div>
 </div>
-<button class="w-full py-4 border-2 border-tertiary text-tertiary rounded-xl font-bold flex items-center justify-center gap-3 active:scale-95 transition-all">
-<span class="material-symbols-outlined" data-icon="share">share</span>
-                Ekonomi Abi bana bunu dedi 😂
-            </button>
+<button class="w-full py-4 border-2 border-tertiary text-tertiary rounded-xl font-bold flex items-center justify-center gap-3 active:scale-95 transition-all" onclick="shareResult()">
+<span class="material-symbols-outlined">share</span>
+            Ekonomi Abi bana bunu dedi 😂
+        </button>
 </section>
-<!-- SECTION: DÖKÜM (Hidden in simulation) -->
+<!-- SECTION: DÖKÜM -->
 <section class="hidden space-y-8" id="tab-dokum">
 <header>
 <h2 class="font-headline text-3xl font-bold text-primary">Harcama Dağılımı</h2>
 </header>
 <div class="bg-surface-container-lowest p-8 rounded-lg shadow-sm flex flex-col items-center">
-<!-- Simple Simulated Donut Chart -->
+<!-- Simple SVG Donut Chart -->
 <div class="relative w-48 h-48 mb-8">
 <svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
 <circle cx="18" cy="18" fill="transparent" r="15.9" stroke="#aaf1d3" stroke-width="4"></circle>
-<circle cx="18" cy="18" fill="transparent" r="15.9" stroke="#006940" stroke-dasharray="45 100" stroke-dashoffset="0" stroke-width="4"></circle>
-<circle cx="18" cy="18" fill="transparent" r="15.9" stroke="#b61321" stroke-dasharray="20 100" stroke-dashoffset="-45" stroke-width="4"></circle>
-<circle cx="18" cy="18" fill="transparent" r="15.9" stroke="#652fe7" stroke-dasharray="35 100" stroke-dashoffset="-65" stroke-width="4"></circle>
+<circle cx="18" cy="18" fill="transparent" id="chart-rent" r="15.9" stroke="#006940" stroke-dasharray="0 100" stroke-dashoffset="0" stroke-width="4"></circle>
+<circle cx="18" cy="18" fill="transparent" id="chart-debt" r="15.9" stroke="#b61321" stroke-dasharray="0 100" stroke-dashoffset="0" stroke-width="4"></circle>
+<circle cx="18" cy="18" fill="transparent" id="chart-lifestyle" r="15.9" stroke="#652fe7" stroke-dasharray="0 100" stroke-dashoffset="0" stroke-width="4"></circle>
 </svg>
 <div class="absolute inset-0 flex flex-col items-center justify-center">
 <span class="text-xs font-bold text-outline uppercase">Gider</span>
-<span class="text-xl font-headline font-black">%100</span>
+<span class="text-xl font-headline font-black" id="display-total-pct">%0</span>
 </div>
 </div>
 <div class="w-full space-y-3">
 <div class="flex justify-between items-center text-sm">
-<div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-primary"></div> Kira</div>
-<span class="font-bold">₺18,000</span>
+<div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-primary"></div> Kira &amp; Sabit</div>
+<span class="font-bold" id="list-rent">₺0</span>
 </div>
 <div class="flex justify-between items-center text-sm">
-<div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-secondary"></div> Borçlar</div>
-<span class="font-bold">₺8,250</span>
+<div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-secondary"></div> Borçlar &amp; Kart</div>
+<span class="font-bold" id="list-debt">₺0</span>
 </div>
 <div class="flex justify-between items-center text-sm">
-<div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-tertiary"></div> Lifestyle</div>
-<span class="font-bold">₺8,000</span>
+<div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-tertiary"></div> Lifestyle &amp; Diğer</div>
+<span class="font-bold" id="list-lifestyle">₺0</span>
 </div>
 </div>
 </div>
 <div class="bg-surface-container p-6 rounded-lg space-y-4">
-<h3 class="font-headline font-bold text-lg">Türkiye Ortalamaları vs. Sen</h3>
+<h3 class="font-headline font-bold text-lg">Harcama Gerçekleri</h3>
 <div class="space-y-6 pt-4">
 <div class="space-y-2">
-<div class="flex justify-between text-xs font-bold opacity-60"><span>DIŞARIDA YEMEK</span><span>ORT: %12</span></div>
+<div class="flex justify-between text-xs font-bold opacity-60"><span>YALANCI LÜKS ORANI</span><span id="display-luxury-pct">%0</span></div>
 <div class="h-3 w-full bg-background rounded-full overflow-hidden relative">
-<div class="h-full bg-primary-dim w-[12%] absolute z-10"></div>
-<div class="h-full bg-secondary w-[28%] absolute opacity-50 z-0"></div>
+<div class="h-full bg-secondary w-0 absolute z-10 transition-all duration-1000" id="luxury-bar"></div>
 </div>
-<p class="text-[10px] text-secondary font-bold">Senin oranın: %28 (Şef kaprisli galiba?)</p>
+<p class="text-[10px] text-secondary font-bold" id="display-lifestyle-comment">"Paran yok ama yaşantın kraliyet ailesi, hayırlı olsun."</p>
 </div>
 </div>
 </div>
 <div class="bg-surface-container-low p-6 rounded-lg border-l-4 border-tertiary">
 <div class="flex items-start gap-4">
 <div class="w-12 h-12 bg-tertiary-container rounded-full flex items-center justify-center shrink-0">
-<span class="material-symbols-outlined text-tertiary" data-icon="coffee">coffee</span>
+<span class="material-symbols-outlined text-tertiary">coffee</span>
 </div>
 <div>
-<h4 class="font-bold text-sm mb-1">Aylık Kahve Analizi</h4>
-<p class="text-xs text-on-surface-variant leading-relaxed">
-                            Bu ay içtiğin 42 adet latte ile 2 tane halka arz hissesi alabilirdin. Ama kafein krizini hisseyle çözemezsin, devam et evlat.
-                        </p>
+<h4 class="font-bold text-sm mb-1">Kahve Bağımlılığı Raporu</h4>
+<p class="text-xs text-on-surface-variant leading-relaxed" id="display-coffee-roast">
+                        Hesaplamama göre, bu ay içtiğin kahvelerle bir emeklilik fonu kurabilirdin ama sen mide yanmasını tercih ettin.
+                    </p>
 </div>
 </div>
 </div>
 </section>
 </main>
-<!-- BottomNavBar -->
+<!-- BottomNavBar (shared component logic) -->
 <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 h-20 bg-[#b4f6da]/70 dark:bg-[#003627]/70 backdrop-blur-xl shadow-[0_-10px_30px_rgba(0,54,39,0.05)] rounded-t-[2rem]">
-<!-- Giriş (Active) -->
-<a class="flex flex-col items-center justify-center bg-[#006940] dark:bg-[#52f9a8] text-white dark:text-[#003627] rounded-full w-16 h-16 -translate-y-4 shadow-lg transition-all duration-300 hover:scale-110" href="#">
-<span class="material-symbols-outlined" data-icon="add_chart">add_chart</span>
+<!-- Giriş -->
+<a class="flex flex-col items-center justify-center bg-[#006940] dark:bg-[#52f9a8] text-white dark:text-[#003627] rounded-full w-16 h-16 -translate-y-4 shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer" id="nav-giris" onclick="switchTab('giris')">
+<span class="material-symbols-outlined">add_chart</span>
 <span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold uppercase tracking-widest mt-1 hidden">Giriş</span>
 </a>
-<!-- Analiz (Inactive) -->
-<a class="flex flex-col items-center justify-center text-[#006940]/60 dark:text-[#52f9a8]/60 p-2 hover:scale-110 transition-transform" href="#">
-<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<!-- Analiz -->
+<a class="flex flex-col items-center justify-center text-[#006940]/60 dark:text-[#52f9a8]/60 p-2 hover:scale-110 transition-transform cursor-pointer" id="nav-analiz" onclick="switchTab('analiz')">
+<span class="material-symbols-outlined">query_stats</span>
 <span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold uppercase tracking-widest mt-1">Analiz</span>
 </a>
-<!-- Döküm (Inactive) -->
-<a class="flex flex-col items-center justify-center text-[#006940]/60 dark:text-[#52f9a8]/60 p-2 hover:scale-110 transition-transform" href="#">
-<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<!-- Döküm -->
+<a class="flex flex-col items-center justify-center text-[#006940]/60 dark:text-[#52f9a8]/60 p-2 hover:scale-110 transition-transform cursor-pointer" id="nav-dokum" onclick="switchTab('dokum')">
+<span class="material-symbols-outlined">receipt_long</span>
 <span class="font-['Plus_Jakarta_Sans'] text-[10px] font-bold uppercase tracking-widest mt-1">Döküm</span>
 </a>
 </nav>
+<script>
+    const tabs = ['giris', 'analiz', 'dokum'];
+    
+    function switchTab(tabId) {
+        tabs.forEach(t => {
+            const el = document.getElementById(`tab-${t}`);
+            const nav = document.getElementById(`nav-${t}`);
+            
+            if (t === tabId) {
+                el.classList.remove('hidden');
+                // Set active styles for nav
+                nav.className = "flex flex-col items-center justify-center bg-[#006940] dark:bg-[#52f9a8] text-white dark:text-[#003627] rounded-full w-16 h-16 -translate-y-4 shadow-lg transition-all duration-300 hover:scale-110 cursor-pointer";
+                nav.querySelector('span:last-child').classList.add('hidden'); // label usually hidden in active
+            } else {
+                el.classList.add('hidden');
+                // Set inactive styles for nav
+                nav.className = "flex flex-col items-center justify-center text-[#006940]/60 dark:text-[#52f9a8]/60 p-2 hover:scale-110 transition-transform cursor-pointer";
+                nav.querySelector('span:last-child').classList.remove('hidden');
+            }
+        });
+    }
+
+    const harshComments = [
+        "Bu gidişle sadece oksijen tüketeceksin, o da şimdilik bedava.",
+        "Cüzdanın için bir dakikalık saygı duruşu başlasın.",
+        "Fakirleşme hızın ışık hızını geçti, tebrikler.",
+        "Senin finansal okuryazarlığın 'olsa da yesek' seviyesinde.",
+        "Emeklilik planın Milli Piyango mu? Yazık.",
+        "Para seni sevmiyor evlat, zorlama.",
+        "Bu harcamalarla ancak rüyanda zengin olursun.",
+        "Geleceğin parlıyor demiyorum, yanıyor diyorum."
+    ];
+
+    const abiTips = [
+        "Kredi kartı senin düşmanın, arkadaşın değil.",
+        "Maaşın yatınca direkt borca gitmesi bir yaşam biçimi değildir.",
+        "Dışarıdan yemek söylemeyi bırak, mutfak süs değil.",
+        "İndirim görünce saldırmayı kes, zaten paran yok.",
+        "Finansal çöküşe son 3... 2... 1..."
+    ];
+
+    function calculateEverything() {
+        const salary = parseFloat(document.getElementById('input-salary').value) || 0;
+        const rent = parseFloat(document.getElementById('input-rent').value) || 0;
+        const groceries = parseFloat(document.getElementById('input-groceries').value) || 0;
+        const transport = parseFloat(document.getElementById('input-transport').value) || 0;
+        const bills = parseFloat(document.getElementById('input-bills').value) || 0;
+        const credit = parseFloat(document.getElementById('input-credit').value) || 0;
+        const card = parseFloat(document.getElementById('input-card').value) || 0;
+        const coffee = parseFloat(document.getElementById('input-coffee').value) || 0;
+        const other = parseFloat(document.getElementById('input-other').value) || 0;
+
+        const totalExpenses = rent + groceries + transport + bills + credit + card + coffee + other;
+        const remaining = salary - totalExpenses;
+        
+        let score = 0;
+        if (salary > 0) {
+            score = (remaining / salary) * 100;
+        }
+        score = Math.max(0, Math.min(100, Math.round(score)));
+
+        // Update UI
+        document.getElementById('display-score').innerText = score;
+        document.getElementById('display-score-bar').style.width = `${score}%`;
+        document.getElementById('display-total-expense').innerText = `₺${totalExpenses.toLocaleString('tr-TR')}`;
+        document.getElementById('display-remaining').innerText = `₺${remaining.toLocaleString('tr-TR')}`;
+        
+        // Harsh comments logic based on score
+        let comment = "";
+        if(score < 10) comment = harshComments[0];
+        else if(score < 30) comment = harshComments[1];
+        else if(score < 50) comment = harshComments[2];
+        else comment = harshComments[3];
+        
+        document.getElementById('display-harsh-comment').innerText = `"${comment}"`;
+        document.getElementById('display-abi-tip').innerText = `"${abiTips[Math.floor(Math.random() * abiTips.length)]}"`;
+
+        // Collapse Date Logic
+        const dailyBurn = totalExpenses / 30;
+        const daysToCollapse = dailyBurn > 0 ? salary / dailyBurn : 365;
+        const collapseDate = new Date();
+        collapseDate.setDate(collapseDate.getDate() + daysToCollapse);
+        
+        const options = { day: 'numeric', month: 'LONG' };
+        document.getElementById('display-collapse-date').innerText = collapseDate.toLocaleDateString('tr-TR', options).toUpperCase();
+        
+        if (daysToCollapse < 10) {
+            document.getElementById('display-collapse-note').innerText = "Vasiyetini hazırladın mı? Çok az vaktin kaldı.";
+        } else if (daysToCollapse < 25) {
+            document.getElementById('display-collapse-note').innerText = "Ay sonunu görürsün ama sürünerek.";
+        } else {
+            document.getElementById('display-collapse-note').innerText = "Şimdilik hayattasın, ama bu bir mucize.";
+        }
+
+        // Breakdown Update
+        const rentPct = (rent + bills) / totalExpenses * 100 || 0;
+        const debtPct = (credit + card) / totalExpenses * 100 || 0;
+        const lifestylePct = (groceries + transport + coffee + other) / totalExpenses * 100 || 0;
+
+        // Update Charts (Simple SVG dasharray logic)
+        document.getElementById('chart-rent').style.strokeDasharray = `${rentPct} 100`;
+        document.getElementById('chart-debt').style.strokeDasharray = `${debtPct} 100`;
+        document.getElementById('chart-debt').style.strokeDashoffset = `-${rentPct}`;
+        document.getElementById('chart-lifestyle').style.strokeDasharray = `${lifestylePct} 100`;
+        document.getElementById('chart-lifestyle').style.strokeDashoffset = `-${rentPct + debtPct}`;
+
+        document.getElementById('list-rent').innerText = `₺${(rent + bills).toLocaleString('tr-TR')}`;
+        document.getElementById('list-debt').innerText = `₺${(credit + card).toLocaleString('tr-TR')}`;
+        document.getElementById('list-lifestyle').innerText = `₺${(groceries + transport + coffee + other).toLocaleString('tr-TR')}`;
+        
+        const totalPctVal = salary > 0 ? (totalExpenses / salary) * 100 : 0;
+        document.getElementById('display-total-pct').innerText = `%${Math.round(totalPctVal)}`;
+        
+        const luxuryRatio = (coffee + other) / totalExpenses * 100 || 0;
+        document.getElementById('display-luxury-pct').innerText = `%${Math.round(luxuryRatio)}`;
+        document.getElementById('luxury-bar').style.width = `${Math.min(100, luxuryRatio)}%`;
+        
+        if(coffee > 1000) {
+            document.getElementById('display-coffee-roast').innerText = "Bu kadar kahveye rağmen hala ayıkamadıysan senin durumun finansal değil tıbbi bir vaka.";
+        } else {
+            document.getElementById('display-coffee-roast').innerText = "Kahve masrafın makul gibi ama yine de birikim yapabileceğin gerçeğini değiştirmiyor.";
+        }
+
+        // Final switch
+        switchTab('analiz');
+    }
+
+    function shareResult() {
+        alert("Abi'nin bu kadar gömmesini gerçekten paylaşmak istiyor musun?");
+    }
+</script>
 </body></html>
